@@ -1,20 +1,54 @@
-const { withDangerousMod } = require('expo/config-plugins');
+const {
+    withAppBuildGradle,
+    withDangerousMod,
+} = require('expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
 /**
  * Fixes "Unresolved reference 'BuildConfig'" in AGP 8.x + Kotlin 2.x
  * 
- * Root cause: AGP 8.x disables BuildConfig generation by default, and even when
- * enabled, the generated BuildConfig.java is not visible to the Kotlin 2.x compiler.
+ * Strategy:
+ * 1. DISABLE auto-generated BuildConfig.java (buildFeatures.buildConfig = false)
+ * 2. CREATE a manual BuildConfig.kt with all needed constants
  * 
- * Solution: Create a manual BuildConfig.kt file with all needed constants.
- * Do NOT enable buildFeatures.buildConfig to avoid Redeclaration conflicts.
+ * This prevents the Redeclaration conflict between generated .java and manual .kt
  */
 module.exports = function withBuildConfig(config) {
     const packageName = config.android?.package || 'com.qtes34.yokdilapp';
 
-    // Create a manual BuildConfig.kt file after prebuild generates the android directory
+    // Step 1: Explicitly DISABLE auto-generated BuildConfig in build.gradle
+    config = withAppBuildGradle(config, (config) => {
+        let contents = config.modResults.contents;
+
+        // Check if buildFeatures block exists
+        const buildFeaturesMatch = contents.match(/buildFeatures\s*\{([^}]*)\}/s);
+        if (buildFeaturesMatch) {
+            // Replace or add buildConfig = false inside existing block
+            let inner = buildFeaturesMatch[1];
+            if (/buildConfig\s*[=:]\s*true/.test(inner)) {
+                inner = inner.replace(/buildConfig\s*[=:]\s*true/, 'buildConfig = false');
+            } else if (!/buildConfig\s*[=:]\s*false/.test(inner)) {
+                inner += '\n        buildConfig = false';
+            }
+            contents = contents.replace(buildFeaturesMatch[0], `buildFeatures {${inner}}`);
+        } else {
+            // Insert buildFeatures block after android {
+            const androidMatch = contents.match(/android\s*\{/);
+            if (androidMatch) {
+                const idx = androidMatch.index + androidMatch[0].length;
+                contents = contents.substring(0, idx) +
+                    '\n    buildFeatures {\n        buildConfig = false\n    }' +
+                    contents.substring(idx);
+            }
+        }
+
+        config.modResults.contents = contents;
+        console.log('[withBuildConfig] Set buildFeatures.buildConfig = false in build.gradle');
+        return config;
+    });
+
+    // Step 2: Create a manual BuildConfig.kt file
     config = withDangerousMod(config, [
         'android',
         async (config) => {
@@ -29,8 +63,7 @@ module.exports = function withBuildConfig(config) {
 
 /**
  * Manual BuildConfig - created by withBuildConfig plugin.
- * AGP 8.x + Kotlin 2.x cannot see the auto-generated BuildConfig.java,
- * so we provide this manual replacement.
+ * Auto-generated BuildConfig.java is disabled to prevent Redeclaration conflicts.
  */
 object BuildConfig {
     const val DEBUG = false
