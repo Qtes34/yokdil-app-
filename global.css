@@ -1,0 +1,88 @@
+/* ===== IMPORT GOOGLE FONTS ===== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Spline+Sans:wght@300..700&display=swap');
+
+/* ===== BASE STYLES ===== */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* ===== DARK THEME (default) ===== */
+:root, [data-theme="dark"] {
+  /* Backgrounds - layered depth */
+  --bg-base:        #0f1117;   /* page background */
+  --bg-surface:     #1a1d27;   /* cards, panels */
+  --bg-elevated:    #232736;   /* modals, popovers, inputs */
+  --bg-hover:       #2a2f45;   /* hover state */
+
+  /* Borders */
+  --border-subtle:  rgba(255,255,255,0.07);
+  --border-default: rgba(255,255,255,0.12);
+  --border-strong:  rgba(255,255,255,0.22);
+
+  /* Text */
+  --text-primary:   #eef0f7;   /* main content, headings */
+  --text-secondary: #9095b0;   /* labels, metadata */
+  --text-muted:     #5a5f7a;   /* placeholders, disabled */
+
+  /* Brand accent — a calm, study-friendly indigo-blue */
+  --accent:         #5b6ef5;
+  --accent-hover:   #6e7ff7;
+  --accent-subtle:  rgba(91,110,245,0.12);
+
+  /* Semantic — rating buttons */
+  --rating-again:   #e05555;   /* red */
+  --rating-hard:    #e07c30;   /* orange */
+  --rating-good:    #3daa6e;   /* green */
+  --rating-easy:    #4a90d9;   /* blue */
+
+  /* Semantic — feedback */
+  --correct:        #3daa6e;
+  --correct-bg:     rgba(61,170,110,0.12);
+  --wrong:          #e05555;
+  --wrong-bg:       rgba(224,85,85,0.12);
+
+  /* Word display — the "hero" element */
+  --word-color:     #ffffff;
+  --word-meaning:   #a3c4ff;   /* Turkish meaning — calm blue highlight */
+  --word-synonym:   #b8c0e0;   /* synonyms — slightly muted */
+  --word-example:   #7a8099;   /* example sentences */
+}
+
+/* ===== LIGHT THEME ===== */
+[data-theme="light"] {
+  --bg-base:        #f4f5f9;
+  --bg-surface:     #ffffff;
+  --bg-elevated:    #eef0f8;
+  --bg-hover:       #e5e8f5;
+
+  --border-subtle:  rgba(0,0,0,0.06);
+  --border-default: rgba(0,0,0,0.10);
+  --border-strong:  rgba(0,0,0,0.18);
+
+  --text-primary:   #1a1d2e;
+  --text-secondary: #5a6080;
+  --text-muted:     #9095b0;
+
+  --accent:         #4458e8;
+  --accent-hover:   #3347d4;
+  --accent-subtle:  rgba(68,88,232,0.10);
+
+  --rating-again:   #c0392b;
+  --rating-hard:    #d35400;
+  --rating-good:    #27ae60;
+  --rating-easy:    #2980b9;
+
+  --correct:        #27ae60;
+  --correct-bg:     rgba(39,174,96,0.10);
+  --wrong:          #c0392b;
+  --wrong-bg:       rgba(192,57,43,0.10);
+
+  --word-color:     #1a1d2e;
+  --word-meaning:   #2c4db5;
+  --word-synonym:   #3a4570;
+  --word-example:   #6b7280;
+}

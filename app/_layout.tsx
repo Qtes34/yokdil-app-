@@ -1,24 +1,23 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
 import 'react-native-reanimated';
-
-import { useColorScheme } from '@/components/useColorScheme';
+import { FontSizes, Spacing, darkColors } from '../constants/theme';
+import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
+import '../global.css';
 
 export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -27,33 +26,90 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  const [dbReady, setDbReady] = useState(false);
+  const [themeReady, setThemeReady] = useState(false);
+  const [initialIsDark, setInitialIsDark] = useState(true);
+
+  useEffect(() => {
+    async function loadTheme() {
+      try {
+        const savedTheme = await AsyncStorage.getItem('yokdil_theme');
+        if (savedTheme === 'light') setInitialIsDark(false);
+        if (Platform.OS === 'web' && savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (e) { }
+      setThemeReady(true);
+    }
+    loadTheme();
+  }, []);
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
+    setDbReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (loaded && dbReady && themeReady) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, dbReady, themeReady]);
 
-  if (!loaded) {
-    return null;
+  if (!loaded || !dbReady || !themeReady) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={darkColors.primary} />
+        <Text style={styles.loadingText}>Yükleniyor...</Text>
+      </View>
+    );
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+    <ThemeProvider initialIsDark={initialIsDark}>
+      <RootLayoutNav />
     </ThemeProvider>
   );
 }
+
+function RootLayoutNav() {
+  const { colors } = useTheme();
+
+  return (
+    <>
+      <StatusBar barStyle={colors === darkColors ? "light-content" : "dark-content"} backgroundColor={colors.background} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: colors.background },
+        }}
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="add-word"
+          options={{
+            presentation: 'modal',
+            title: 'Yeni Kelime Ekle',
+            headerShown: false,
+          }}
+        />
+      </Stack>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: darkColors.background,
+  },
+  loadingText: {
+    color: darkColors.textSecondary,
+    fontSize: FontSizes.md,
+    marginTop: Spacing.md,
+  },
+});

@@ -1,0 +1,222 @@
+[
+  {
+    "word": "NECESSARY",
+    "partOfSpeech": "adj",
+    "turkish": "Gerekli, zaruri, elzem",
+    "exampleSentence": "European countries should take the necessary precautions in order to reduce the cost of electricity.",
+    "synonyms": "Essential, needed, required, compulsory, obligatory",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "OCCUR",
+    "partOfSpeech": "v",
+    "turkish": "Meydana gelmek, olmak",
+    "exampleSentence": "Half a million earthquakes occur worldwide each year.",
+    "synonyms": "Take place, happen",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "PENETRATE",
+    "partOfSpeech": "v",
+    "turkish": "Nüfuz etmek, içine girmek",
+    "exampleSentence": "X-rays are a form of electromagnetic radiation that penetrates human flesh.",
+    "synonyms": "Enter, pass through",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "SUPPLY",
+    "partOfSpeech": "n/v",
+    "turkish": "Sağlamak, temin etmek, desteklemek",
+    "exampleSentence": "Coal-fired power stations supply half the electricity in many industrial countries.",
+    "synonyms": "Provide, deliver, contribute",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "MATTER",
+    "partOfSpeech": "n",
+    "turkish": "Madde, cisim",
+    "exampleSentence": "The research may influence how we understand the relations among space, time and matter.",
+    "synonyms": "Substance, material",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "LAUNCH",
+    "partOfSpeech": "v",
+    "turkish": "Fırlatmak (roket, uydu)",
+    "exampleSentence": "Last year, NASA launched the Swift satellite into the space.",
+    "synonyms": "Send off, throw",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "INFLUENCE",
+    "partOfSpeech": "n/v",
+    "turkish": "Etkilemek, tesir etmek",
+    "exampleSentence": "Dams influence aquatic ecology and biodiversity.",
+    "synonyms": "Affect, impact",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "GROWTH",
+    "partOfSpeech": "n",
+    "turkish": "Büyüme, gelişme",
+    "exampleSentence": "The growth of planets in the solar system was closely connected with the large-scale deformation of asteroids.",
+    "synonyms": "Development, evolution, progress",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "FLEXIBILITY",
+    "partOfSpeech": "n",
+    "turkish": "Esneklik, bükülebilirlik",
+    "exampleSentence": "Current industrial robots meet speed and flexibility requirements.",
+    "synonyms": "Elasticity",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "EVENTUALLY",
+    "partOfSpeech": "adv",
+    "turkish": "Nihayetinde, sonunda",
+    "exampleSentence": "Human evolution will eventually allow humans to live in the extreme conditions of space.",
+    "synonyms": "Finally, ultimately, sooner or later",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "USEFUL",
+    "partOfSpeech": "adj",
+    "turkish": "Faydalı, yararlı",
+    "exampleSentence": "Underwater turbines are particularly useful because they are unaffected by storms.",
+    "synonyms": "Beneficial, helpful, practical",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "MAGNIFY",
+    "partOfSpeech": "v",
+    "turkish": "Büyültmek, büyük göstermek",
+    "exampleSentence": "Their movements are tracked by video and magnified on a screen.",
+    "synonyms": "Enlarge",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "FORMERLY",
+    "partOfSpeech": "adv",
+    "turkish": "Eskiden, önceden",
+    "exampleSentence": "Formerly scientists thought that one large earthquake could not possibly affect the timing or location of the next.",
+    "synonyms": "Previously, in the past",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "VAGUE",
+    "partOfSpeech": "adj",
+    "turkish": "Belirsiz, net değil, muğlak",
+    "exampleSentence": "The future of China's space program is vague because of high costs.",
+    "synonyms": "Unclear, indefinite, ambiguous",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "ENABLE",
+    "partOfSpeech": "v",
+    "turkish": "İmkan vermek, olanak sağlamak",
+    "exampleSentence": "Satellites enable us to transmit news all around the world.",
+    "synonyms": "Allow, permit",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "VANISH",
+    "partOfSpeech": "v",
+    "turkish": "Yok olmak, kaybolmak",
+    "exampleSentence": "Due to logging and cultivation, forests are vanishing all over the world.",
+    "synonyms": "Die out, disappear",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "WILDERNESS",
+    "partOfSpeech": "n",
+    "turkish": "Yaban hayat, vahşi yaşam",
+    "exampleSentence": "Noise pollution doubled sound levels in 12% of all wilderness areas.",
+    "synonyms": "Uninhabited area left in its natural condition",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "ENHANCE",
+    "partOfSpeech": "v",
+    "turkish": "Artırmak, geliştirmek",
+    "exampleSentence": "Certain genes can dramatically enhance an organism's health and extend its life span.",
+    "synonyms": "Improve, augment, increase, boost, develop",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "CELESTIAL",
+    "partOfSpeech": "adj",
+    "turkish": "Gökle ilgili, göksel",
+    "exampleSentence": "The duty of an astronomer is to record celestial motions through careful observation.",
+    "synonyms": "Heavenly, astronomical",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  },
+  {
+    "word": "EXTINCTION",
+    "partOfSpeech": "n",
+    "turkish": "Nesli tükenme, yok olma",
+    "exampleSentence": "The emergence of the Himalayas caused the extinction of many ocean species.",
+    "synonyms": "Disappearance, death",
+    "interval": 1,
+    "easeFactor": 2.5,
+    "repetitions": 0,
+    "dueDate": "Date.now()"
+  }
+]

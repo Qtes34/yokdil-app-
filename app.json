@@ -1,17 +1,16 @@
 {
   "expo": {
-    "name": "yokdil-app",
+    "name": "YÖKDİL Hazırlık",
     "slug": "yokdil-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "yokdilapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0F0F1E"
     },
     "ios": {
       "supportsTablet": true
@@ -19,21 +18,33 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0F0F1E"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.qtes34.yokdilapp"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "shortName": "YÖKDİL",
+      "display": "standalone",
+      "themeColor": "#0F0F1E",
+      "backgroundColor": "#0F0F1E"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "./plugins/withBuildConfig"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d84a6599-a05d-4f02-90a5-f27ef3c379f7"
+      }
     }
   }
 }
