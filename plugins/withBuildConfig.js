@@ -1,47 +1,20 @@
-const {
-    withAppBuildGradle,
-    withGradleProperties,
-    withDangerousMod,
-} = require('expo/config-plugins');
+const { withDangerousMod } = require('expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
 /**
- * Instead of replacing BuildConfig references (which broke the class files),
- * we now CREATE a real BuildConfig.kt file that provides all needed constants.
- * This way the original MainActivity.kt and MainApplication.kt remain untouched.
+ * Fixes "Unresolved reference 'BuildConfig'" in AGP 8.x + Kotlin 2.x
+ * 
+ * Root cause: AGP 8.x disables BuildConfig generation by default, and even when
+ * enabled, the generated BuildConfig.java is not visible to the Kotlin 2.x compiler.
+ * 
+ * Solution: Create a manual BuildConfig.kt file with all needed constants.
+ * Do NOT enable buildFeatures.buildConfig to avoid Redeclaration conflicts.
  */
 module.exports = function withBuildConfig(config) {
     const packageName = config.android?.package || 'com.qtes34.yokdilapp';
 
-    // Step 1: gradle.properties
-    config = withGradleProperties(config, (config) => {
-        const key = 'android.defaults.buildfeatures.buildconfig';
-        config.modResults = config.modResults.filter(
-            (item) => !(item.type === 'property' && item.key === key)
-        );
-        config.modResults.push({ type: 'property', key, value: 'true' });
-        return config;
-    });
-
-    // Step 2: build.gradle buildFeatures
-    config = withAppBuildGradle(config, (config) => {
-        let contents = config.modResults.contents;
-        if (!/buildFeatures\s*\{[^}]*buildConfig\s*(=\s*)?true/s.test(contents)) {
-            const m = contents.match(/android\s*\{/);
-            if (m) {
-                const idx = m.index + m[0].length;
-                contents = contents.substring(0, idx) +
-                    '\n    buildFeatures {\n        buildConfig = true\n    }' +
-                    contents.substring(idx);
-                config.modResults.contents = contents;
-            }
-        }
-        return config;
-    });
-
-    // Step 3: Create a manual BuildConfig.kt file as a fallback
-    // This runs AFTER prebuild creates the android directory
+    // Create a manual BuildConfig.kt file after prebuild generates the android directory
     config = withDangerousMod(config, [
         'android',
         async (config) => {
@@ -52,19 +25,12 @@ module.exports = function withBuildConfig(config) {
             );
             const buildConfigFile = path.join(buildConfigDir, 'BuildConfig.kt');
 
-            // Only create if BuildConfig.java doesn't exist (generated one)
-            const generatedBuildConfig = path.join(
-                config.modRequest.platformProjectRoot,
-                'app', 'build', 'generated', 'source', 'buildConfig'
-            );
-
-            // Always create our manual BuildConfig.kt as safety net
             const buildConfigContent = `package ${packageName}
 
 /**
- * Manual BuildConfig - created by withBuildConfig plugin
- * This exists because AGP 8.x + Kotlin 2.x has a known issue where
- * the auto-generated BuildConfig.java is not visible to Kotlin compiler.
+ * Manual BuildConfig - created by withBuildConfig plugin.
+ * AGP 8.x + Kotlin 2.x cannot see the auto-generated BuildConfig.java,
+ * so we provide this manual replacement.
  */
 object BuildConfig {
     const val DEBUG = false
@@ -77,10 +43,9 @@ object BuildConfig {
 }
 `;
 
-            // Ensure directory exists
             fs.mkdirSync(buildConfigDir, { recursive: true });
             fs.writeFileSync(buildConfigFile, buildConfigContent, 'utf8');
-            console.log(`[withBuildConfig] Created manual BuildConfig.kt at ${buildConfigFile}`);
+            console.log('[withBuildConfig] Created manual BuildConfig.kt');
 
             return config;
         },
