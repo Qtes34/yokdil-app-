@@ -34,7 +34,17 @@
       "backgroundColor": "#0F0F1E"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "buildFeatures": {
+              "buildConfig": true
+            }
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
