@@ -23,6 +23,7 @@ module.exports = function withBuildConfig(config) {
             .replace(/BuildConfig\.IS_HERMES_ENABLED/g, 'true')
             .replace(/BuildConfig\.DEBUG/g, 'false')
             .replace(/BuildConfig\.BUILD_TYPE/g, '"release"')
+            .replace(/BuildConfig\.REACT_NATIVE_RELEASE_LEVEL/g, '"stable"')
             .replace(/BuildConfig\.APPLICATION_ID/g, `"${packageName}"`)
             .replace(/BuildConfig\.VERSION_CODE/g, '1')
             .replace(/BuildConfig\.VERSION_NAME/g, '"1.0.0"');

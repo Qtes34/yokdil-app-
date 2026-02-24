@@ -34,8 +34,7 @@
       "backgroundColor": "#0F0F1E"
     },
     "plugins": [
-      "expo-router",
-      "./plugins/withBuildConfig"
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
