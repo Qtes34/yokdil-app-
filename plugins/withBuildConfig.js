@@ -22,8 +22,10 @@ module.exports = function withBuildConfig(config) {
             .replace(/BuildConfig\.IS_NEW_ARCHITECTURE_ENABLED/g, 'true')
             .replace(/BuildConfig\.IS_HERMES_ENABLED/g, 'true')
             .replace(/BuildConfig\.DEBUG/g, 'false')
+            .replace(/BuildConfig\.BUILD_TYPE/g, '"release"')
             .replace(/BuildConfig\.APPLICATION_ID/g, `"${packageName}"`)
-            .replace(/BuildConfig\.[A-zA-Z_]+/g, 'false'); // catch all fallback for anything else
+            .replace(/BuildConfig\.VERSION_CODE/g, '1')
+            .replace(/BuildConfig\.VERSION_NAME/g, '"1.0.0"');
     };
 
     // Step 1: Remove BuildConfig references from MainActivity.kt
