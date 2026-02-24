@@ -44,7 +44,8 @@
             }
           }
         }
-      ]
+      ],
+      "./plugins/withAndroidFix"
     ],
     "experiments": {
       "typedRoutes": true
