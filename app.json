@@ -41,7 +41,8 @@
           "android": {
             "buildFeatures": {
               "buildConfig": true
-            }
+            },
+            "enableMultiDex": true
           }
         }
       ],
