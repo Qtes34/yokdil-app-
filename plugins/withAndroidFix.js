@@ -20,8 +20,7 @@ module.exports = function withAndroidFix(config) {
 
             const replaceBuildConfigArgs = (content) => {
                 return content
-                    .replace(/BuildConfig\.IS_NEW_ARCHITECTURE_ENABLED/g, 'true')
-                    .replace(/BuildConfig\.DEBUG/g, 'false')
+                    .replace(/BuildConfig\.IS_NEW_ARCHITECTURE_ENABLED/g, 'false')
                     .replace(/BuildConfig\.IS_HERMES_ENABLED/g, 'true')
                     .replace(/BuildConfig\.REACT_NATIVE_RELEASE_LEVEL/g, '"stable"')
                     .replace(/BuildConfig\.BUILD_TYPE/g, '"release"');
