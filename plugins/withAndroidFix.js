@@ -31,8 +31,8 @@ module.exports = function withAndroidFix(config) {
         // Application -> MultiDexApplication
         if (!contents.includes('MultiDexApplication()')) {
             contents = contents.replace(
-                /class MainApplication : Application\(\)/,
-                'class MainApplication : MultiDexApplication()'
+                /class MainApplication : Application\(\),/,
+                'class MainApplication : MultiDexApplication(),'
             );
         }
 
