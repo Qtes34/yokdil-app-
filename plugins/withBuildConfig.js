@@ -1,4 +1,6 @@
-const { withMainActivity, withMainApplication, withAppBuildGradle } = require('expo/config-plugins');
+const { withMainActivity, withMainApplication, withAppBuildGradle, withDangerousMod } = require('expo/config-plugins');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = function withBuildConfig(config) {
     const packageName = config.android?.package || 'com.qtes34.yokdilapp';
@@ -9,9 +11,11 @@ module.exports = function withBuildConfig(config) {
             .replace(/BuildConfig\.IS_HERMES_ENABLED/g, 'true')
             .replace(/BuildConfig\.DEBUG/g, 'false')
             .replace(/BuildConfig\.BUILD_TYPE/g, '"release"')
+            .replace(/BuildConfig\.REACT_NATIVE_RELEASE_LEVEL/g, '"stable"')
             .replace(/BuildConfig\.APPLICATION_ID/g, `"${packageName}"`)
             .replace(/BuildConfig\.VERSION_NAME/g, '"1.0.0"')
-            .replace(/BuildConfig\.VERSION_CODE/g, '1');
+            .replace(/BuildConfig\.VERSION_CODE/g, '1')
+            .replace(/import.*BuildConfig.*\n?/g, '');
     };
 
     config = withMainActivity(config, (config) => {
@@ -23,6 +27,24 @@ module.exports = function withBuildConfig(config) {
         config.modResults.contents = replaceBuildConfigRefs(config.modResults.contents);
         return config;
     });
+
+    config = withDangerousMod(config, ['android', async (config) => {
+        const mainAppPath = path.join(
+            config.modRequest.platformProjectRoot,
+            'app',
+            'src',
+            'main',
+            'java',
+            ...packageName.split('.'),
+            'MainApplication.kt'
+        );
+        if (fs.existsSync(mainAppPath)) {
+            let content = fs.readFileSync(mainAppPath, 'utf8');
+            content = replaceBuildConfigRefs(content);
+            fs.writeFileSync(mainAppPath, content);
+        }
+        return config;
+    }]);
 
     config = withAppBuildGradle(config, (config) => {
         let contents = config.modResults.contents;

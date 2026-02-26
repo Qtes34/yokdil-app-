@@ -8,7 +8,6 @@ module.exports = function withProguardRules(config) {
     return withDangerousMod(config, ['android', async (config) => {
         const proguardPath = path.join(config.modRequest.platformProjectRoot, 'app', 'proguard-rules.pro');
         const proguardRules = `
-# Keep MainApplication
 -keep class ${packageName}.MainApplication { *; }
 -keep class * extends android.app.Application { *; }
 -keep class * extends androidx.multidex.MultiDexApplication { *; }
