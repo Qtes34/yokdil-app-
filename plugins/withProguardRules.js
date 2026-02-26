@@ -1,30 +1,32 @@
-const { withAppBuildGradle } = require('expo/config-plugins');
+const { withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
 module.exports = function withProguardRules(config) {
-    return withAppBuildGradle(config, (config) => {
-        // ProGuard kurallarının sonuna bizim özel kuralımızı ekleyeceğiz.
-        const proguardKuralımız = "\n-keep class com.qtes34.yokdilapp.MainApplication { *; }\n";
+    const packageName = config.android?.package || 'com.qtes34.yokdilapp';
 
-        // "proguard-rules.pro" dosyasının yolu (Expo prebuild'den sonra)
+    return withDangerousMod(config, ['android', async (config) => {
         const proguardPath = path.join(config.modRequest.platformProjectRoot, 'app', 'proguard-rules.pro');
-
-        // Dosya varsa kuralı ekle, yoksa dosyayı oluştur ve kuralı koy.
+        const proguardRules = `
+# Keep MainApplication
+-keep class ${packageName}.MainApplication { *; }
+-keep class * extends android.app.Application { *; }
+-keep class * extends androidx.multidex.MultiDexApplication { *; }
+-keep class ${packageName}.MainActivity { *; }
+-keep class com.facebook.react.** { *; }
+-keep class expo.modules.** { *; }
+-dontobfuscate
+-dontshrink
+-keepattributes SourceFile,LineNumberTable,*Annotation*
+`;
         if (fs.existsSync(proguardPath)) {
             let content = fs.readFileSync(proguardPath, 'utf8');
-            if (!content.includes('com.qtes34.yokdilapp.MainApplication')) {
-                content += proguardKuralımız;
-                fs.writeFileSync(proguardPath, content, 'utf8');
+            if (!content.includes('Keep MainApplication')) {
+                fs.writeFileSync(proguardPath, content + proguardRules, 'utf8');
             }
         } else {
-            fs.writeFileSync(proguardPath, proguardKuralımız, 'utf8');
+            fs.writeFileSync(proguardPath, proguardRules, 'utf8');
         }
-
-        // Uygulamanın minifyEnabled kullanımına bağlı olarak build.gradle'a işaret edebiliriz,
-        // ancak Expo bunu varsayılan (release) buildType altında genelde açar.
-        // Biz şimdilik sadece Proguard dosyasına kuralı ekleyeceğiz.
-
         return config;
-    });
+    }]);
 };

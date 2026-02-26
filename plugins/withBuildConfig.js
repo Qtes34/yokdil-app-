@@ -1,45 +1,39 @@
-const {
-    withMainActivity,
-    withMainApplication,
-} = require('expo/config-plugins');
+const { withMainActivity, withMainApplication, withAppBuildGradle } = require('expo/config-plugins');
 
-/**
- * Fixes "Unresolved reference 'BuildConfig'" OR "Redeclaration: BuildConfig" 
- * in AGP 8.x + Kotlin 2.x
- * 
- * Strategy:
- * Instead of fighting Gradle to generate or NOT generate BuildConfig.java,
- * we just REPLACE all references to BuildConfig inside MainActivity.kt and MainApplication.kt
- * with their hardcoded values.
- * 
- * This completely removes the dependency on BuildConfig from our Kotlin code!
- */
 module.exports = function withBuildConfig(config) {
     const packageName = config.android?.package || 'com.qtes34.yokdilapp';
 
-    const replaceBuildConfigArgs = (content) => {
+    const replaceBuildConfigRefs = (content) => {
         return content
             .replace(/BuildConfig\.IS_NEW_ARCHITECTURE_ENABLED/g, 'false')
             .replace(/BuildConfig\.IS_HERMES_ENABLED/g, 'true')
             .replace(/BuildConfig\.DEBUG/g, 'false')
             .replace(/BuildConfig\.BUILD_TYPE/g, '"release"')
-            .replace(/BuildConfig\.REACT_NATIVE_RELEASE_LEVEL/g, '"stable"')
             .replace(/BuildConfig\.APPLICATION_ID/g, `"${packageName}"`)
-            .replace(/BuildConfig\.VERSION_CODE/g, '1')
-            .replace(/BuildConfig\.VERSION_NAME/g, '"1.0.0"');
+            .replace(/BuildConfig\.VERSION_NAME/g, '"1.0.0"')
+            .replace(/BuildConfig\.VERSION_CODE/g, '1');
     };
 
-    // Step 1: Remove BuildConfig references from MainActivity.kt
     config = withMainActivity(config, (config) => {
-        config.modResults.contents = replaceBuildConfigArgs(config.modResults.contents);
-        console.log('[withBuildConfig] Stripped BuildConfig references from MainActivity.kt');
+        config.modResults.contents = replaceBuildConfigRefs(config.modResults.contents);
         return config;
     });
 
-    // Step 2: Remove BuildConfig references from MainApplication.kt
     config = withMainApplication(config, (config) => {
-        config.modResults.contents = replaceBuildConfigArgs(config.modResults.contents);
-        console.log('[withBuildConfig] Stripped BuildConfig references from MainApplication.kt');
+        config.modResults.contents = replaceBuildConfigRefs(config.modResults.contents);
+        return config;
+    });
+
+    config = withAppBuildGradle(config, (config) => {
+        let contents = config.modResults.contents;
+        if (!contents.includes('buildConfig = true')) {
+            if (contents.includes('buildFeatures {')) {
+                contents = contents.replace(/buildFeatures\s*\{/, 'buildFeatures {\n        buildConfig = true');
+            } else {
+                contents = contents.replace(/android\s*\{/, 'android {\n    buildFeatures {\n        buildConfig = true\n    }');
+            }
+        }
+        config.modResults.contents = contents;
         return config;
     });
 
