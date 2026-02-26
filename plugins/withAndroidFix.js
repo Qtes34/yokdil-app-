@@ -1,10 +1,27 @@
-const { withAppBuildGradle, withMainApplication } = require('@expo/config-plugins');
+const { withAppBuildGradle, withMainApplication, withDangerousMod } = require('@expo/config-plugins');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = function withAndroidFix(config) {
-    // 1. build.gradle'a multidex bağımlılığını ekle
+    // 1. multidex-keep.txt oluştur
+    config = withDangerousMod(config, [
+        'android',
+        async (config) => {
+            const filePath = path.join(
+                config.modRequest.platformProjectRoot,
+                'app',
+                'multidex-keep.txt'
+            );
+            fs.writeFileSync(filePath, 'com/qtes34/yokdilapp/MainApplication.class\n');
+            return config;
+        },
+    ]);
+
+    // 2. build.gradle'ı düzelt
     config = withAppBuildGradle(config, (config) => {
         let contents = config.modResults.contents;
 
+        // multidex bağımlılığı
         if (!contents.includes('androidx.multidex:multidex')) {
             contents = contents.replace(
                 /dependencies\s*\{/,
@@ -12,15 +29,22 @@ module.exports = function withAndroidFix(config) {
             );
         }
 
+        // multiDexKeepFile — multiDexEnabled satırını bul, hemen altına ekle
+        if (!contents.includes('multiDexKeepFile')) {
+            contents = contents.replace(
+                /(multiDexEnabled\s*=?\s*true)/,
+                '$1\n        multiDexKeepFile file("multidex-keep.txt")'
+            );
+        }
+
         config.modResults.contents = contents;
         return config;
     });
 
-    // 2. MainApplication.kt dosyasını düzelt
+    // 3. MainApplication.kt'yi düzelt
     config = withMainApplication(config, (config) => {
         let contents = config.modResults.contents;
 
-        // MultiDexApplication import ekle (dosyanın en başına)
         if (!contents.includes('import androidx.multidex.MultiDexApplication')) {
             contents = contents.replace(
                 /^(package .+\n)/m,
@@ -28,7 +52,6 @@ module.exports = function withAndroidFix(config) {
             );
         }
 
-        // Application -> MultiDexApplication
         if (!contents.includes('MultiDexApplication()')) {
             contents = contents.replace(
                 /class MainApplication : Application\(\),/,
