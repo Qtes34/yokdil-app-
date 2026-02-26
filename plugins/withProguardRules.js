@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function withProguardRules(config) {
-    const packageName = config.android?.package || 'com.ykdilhazrlk';
+    const packageName = config.android?.package || 'com.qtes34.yokdilapp';
 
     return withDangerousMod(config, ['android', async (config) => {
         const proguardPath = path.join(config.modRequest.platformProjectRoot, 'app', 'proguard-rules.pro');

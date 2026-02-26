@@ -22,7 +22,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.ykdilhazrlk"
+      "package": "com.qtes34.yokdilapp"
     },
     "web": {
       "bundler": "metro",
