@@ -46,7 +46,8 @@
           }
         }
       ],
-      "./plugins/withAndroidFix"
+      "./plugins/withAndroidFix",
+      "./plugins/withBuildConfig"
     ],
     "experiments": {
       "typedRoutes": true
