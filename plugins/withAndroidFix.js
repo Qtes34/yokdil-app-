@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = function withAndroidFix(config) {
-    const packageName = config.android?.package || 'com.qtes34.yokdilapp';
+    const packageName = config.android?.package || 'com.ykdilhazrlk';
 
     config = withDangerousMod(config, [
         'android',
@@ -11,7 +11,7 @@ module.exports = function withAndroidFix(config) {
             const appDir = path.join(config.modRequest.platformProjectRoot, 'app');
             const multidexKeepFile = path.join(appDir, 'multidex-keep.txt');
             const classesToKeep = [
-                `${packageName}/MainApplication.class`,
+                `com/ykdilhazrlk/MainApplication.class`,
                 'androidx/multidex/MultiDexApplication.class',
                 'android/app/Application.class',
             ].join('\n');

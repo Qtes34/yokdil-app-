@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function withBuildConfig(config) {
-    const packageName = config.android?.package || 'com.qtes34.yokdilapp';
+    const packageName = config.android?.package || 'com.ykdilhazrlk';
 
     const replaceBuildConfigRefs = (content) => {
         return content
