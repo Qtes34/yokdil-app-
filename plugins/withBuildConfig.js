@@ -28,24 +28,6 @@ module.exports = function withBuildConfig(config) {
         return config;
     });
 
-    config = withDangerousMod(config, ['android', async (config) => {
-        const mainAppPath = path.join(
-            config.modRequest.platformProjectRoot,
-            'app',
-            'src',
-            'main',
-            'java',
-            ...packageName.split('.'),
-            'MainApplication.kt'
-        );
-        if (fs.existsSync(mainAppPath)) {
-            let content = fs.readFileSync(mainAppPath, 'utf8');
-            content = replaceBuildConfigRefs(content);
-            fs.writeFileSync(mainAppPath, content);
-        }
-        return config;
-    }]);
-
     config = withAppBuildGradle(config, (config) => {
         let contents = config.modResults.contents;
         if (!contents.includes('buildConfig = true')) {
