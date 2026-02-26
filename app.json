@@ -46,9 +46,10 @@
           }
         }
       ],
-      "./plugins/withAndroidFix",
-      "./plugins/withBuildConfig",
-      "./plugins/withProguardRules"
+      "./plugins/withAndroidFix.js",
+      "./plugins/withProguardRules.js",
+      "./plugins/withBuildConfig.js",
+      "./plugins/withDesugaring.js"
     ],
     "experiments": {
       "typedRoutes": true
